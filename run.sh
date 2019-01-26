@@ -21,7 +21,7 @@ TMPDIR=/tmp
 TRGDIR=~/backups/databases
 BCKDIR=$TRGDIR/$DATE
 BUCKET_NAME=my-aws-s3-bucket-name
-BUCKET_DIR=backups/databases
+BUCKET_DIR=backups/databases/mysql
 BUCKET_PATH=$BUCKET_NAME/$BUCKET_DIR
 
 # Ir al directorio temporal
@@ -49,15 +49,19 @@ for database in $databases; do
 	if test $status -eq 0
 	then
 		echo "Uploading $filename"
-		/usr/local/bin/aws s3 cp $destination s3://$BUCKET_PATH/$site/$DATE/databases/
+		/usr/local/bin/aws s3 cp $destination s3://$BUCKET_PATH/$database/$DATE/
 	fi	
 	
 done
 
+# Listar archivos
 ls -lh $finalpath
 
 echo "Deleting old files in $TRGDIR"
 find $TRGDIR/* -type d -ctime +7 -exec rm -rf {} \;
+
+# Listar directorios
+ls -lh $TRGDIR
 
 #Descomprimir
 #gunzip < [backupfile.sql.gz] | mysql -u [uname] -p[pass] [dbname]

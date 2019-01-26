@@ -1,5 +1,31 @@
 # Databases Backup Linux Script
 
+## Crear usuario para copias de seguridad
+
+```
+mysql -u root -p
+# SET GLOBAL validate_password_policy = LOW;
+CREATE USER 'backups'@'localhost' IDENTIFIED BY 'my-password';
+GRANT SELECT, RELOAD, EVENT, LOCK TABLES, PROCESS, REFERENCES, SELECT, SHOW DATABASES, SHOW VIEW, REPLICATION CLIENT, TRIGGER ON *.* TO 'backups'@'localhost' ;
+quit
+```
+
+## Configurar credenciales de MySql
+```
+nano ~/.my.cnf
+```
+
+```
+[client]
+user = backups
+password = my-password
+host = my-host
+```
+
+```
+chmod go-rw ~/.my.cnf
+```
+
 ## Crear directorios
 ```
 cd ~
