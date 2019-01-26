@@ -70,7 +70,8 @@ Previamente **se debe configurar _AWS cli_** para poder subir los archivos a *AW
 crontab -e
 ```
 Todos los días a la 1am
-> 0 1 * * * /bin/bash /home/ubuntu/scripts/databases-backup.sh
+> 0 1 * * * /bin/bash /home/ubuntu/scripts/backups/databases-backup/run.sh
+
 
 
 
