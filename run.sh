@@ -15,13 +15,15 @@ MYSQL=/usr/bin/mysql
 FILEEXT=sql.gz
 DATE=$(date +"%F")
 MYSQL_CONFIG_FILE=~/.my.cnf
+SCRIPT_CONFIG_FILE=run.conf
 
 #Definir directorios
 TMPDIR=/tmp
 TRGDIR=~/backups/databases
+
+# Cargar parametros
+source $SCRIPT_CONFIG_FILE
 BCKDIR=$TRGDIR/$DATE
-BUCKET_NAME=my-aws-s3-bucket-name
-BUCKET_DIR=backups/databases/mysql
 BUCKET_PATH=$BUCKET_NAME/$BUCKET_DIR
 
 # Ir al directorio temporal
