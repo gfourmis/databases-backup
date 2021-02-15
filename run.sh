@@ -26,13 +26,13 @@ TRGDIR=~/backups/databases
 # Cargar parametros
 source $SCRIPT_CONFIG_FILE
 BCKDIR=$TRGDIR/$DATE
-BUCKET_PATH=$BUCKET_NAME/$BUCKET_DIR
 
 # Ir al directorio temporal
 cd $TMPDIR
 
 #Obtener nombre de las bases de datos
 databases=`$MYSQL --defaults-extra-file=$MYSQL_CONFIG_FILE -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema|performance_schema|mysql|phpmyadmin|sys)"`
+site=periplia.com
 
 # Crear directorio de salida
 finalpath=$BCKDIR
@@ -46,14 +46,22 @@ for database in $databases; do
 	destination=$finalpath/$filename
 
 	echo "Dumping database: $database"
+
 	$MYSQLDUMP --defaults-extra-file=$MYSQL_CONFIG_FILE --force --opt --databases $database | $GZIP > $destination
-	$GZIP -t $destination && echo OK || echo FAIL		
+	$GZIP -t $destination && echo OK || echo FAIL
+
 	# Validar salida del comando anterior
 	status=$?
+
+	BUCKET_DIR=$site/databases/$DATE
+	BUCKET_PATH=$BUCKET_NAME/$BUCKET_DIR
+
+	echo "Uploading $AWS_BIN s3 cp $destination s3://$BUCKET_PATH//"
+
 	if test $status -eq 0
 	then
 		echo "Uploading $filename"
-		$AWS_BIN s3 cp $destination s3://$BUCKET_PATH/$database/$DATE/
+		$AWS_BIN s3 cp $destination s3://$BUCKET_PATH//
 	fi	
 	
 done
