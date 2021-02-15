@@ -1,6 +1,7 @@
 #!/bin/bash
 #Purpose = Backup of Important Databases
 #Created on 26-01-2019
+#update on 15-02-2021
 #Author = frojas
 #Version 1.0
 
@@ -16,6 +17,7 @@ FILEEXT=sql.gz
 DATE=$(date +"%F")
 MYSQL_CONFIG_FILE=~/.my.cnf
 SCRIPT_CONFIG_FILE=run.conf
+AWS_BIN=/usr/local/bin/aws
 
 #Definir directorios
 TMPDIR=/tmp
@@ -51,7 +53,7 @@ for database in $databases; do
 	if test $status -eq 0
 	then
 		echo "Uploading $filename"
-		/usr/local/bin/aws s3 cp $destination s3://$BUCKET_PATH/$database/$DATE/
+		$AWS_BIN s3 cp $destination s3://$BUCKET_PATH/$database/$DATE/
 	fi	
 	
 done
