@@ -32,7 +32,7 @@ cd $TMPDIR
 
 #Obtener nombre de las bases de datos
 databases=`$MYSQL --defaults-extra-file=$MYSQL_CONFIG_FILE -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema|performance_schema|mysql|phpmyadmin|sys)"`
-site=periplia.com
+site=sites.com
 
 # Crear directorio de salida
 finalpath=$BCKDIR
