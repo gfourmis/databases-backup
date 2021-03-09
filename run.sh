@@ -32,11 +32,13 @@ cd $TMPDIR
 
 #Obtener nombre de las bases de datos
 databases=`$MYSQL --defaults-extra-file=$MYSQL_CONFIG_FILE -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema|performance_schema|mysql|phpmyadmin|sys)"`
-site=sites.com
+site=site.com
 
 # Crear directorio de salida
 finalpath=$BCKDIR
 mkdir -p $finalpath
+
+BUCKET_DIR=$site/$BUCKET_DIR
 
 #Recorrer elementos
 for database in $databases; do
@@ -53,15 +55,14 @@ for database in $databases; do
 	# Validar salida del comando anterior
 	status=$?
 
-	BUCKET_DIR=$site/databases/$DATE
-	BUCKET_PATH=$BUCKET_NAME/$BUCKET_DIR
+	BUCKET_PATH=$BUCKET_NAME/$BUCKET_DIR/$database/$DATE
 
-	echo "Uploading $AWS_BIN s3 cp $destination s3://$BUCKET_PATH//"
+	# echo "Uploading $AWS_BIN s3 cp $destination s3://$BUCKET_PATH/"
 
 	if test $status -eq 0
 	then
 		echo "Uploading $filename"
-		$AWS_BIN s3 cp $destination s3://$BUCKET_PATH//
+		$AWS_BIN s3 cp $destination s3://$BUCKET_PATH/
 	fi	
 	
 done
