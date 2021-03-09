@@ -32,13 +32,13 @@ cd $TMPDIR
 
 #Obtener nombre de las bases de datos
 databases=`$MYSQL --defaults-extra-file=$MYSQL_CONFIG_FILE -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema|performance_schema|mysql|phpmyadmin|sys)"`
-site=site.com
+HOST_NAME=site.com
 
 # Crear directorio de salida
 finalpath=$BCKDIR
 mkdir -p $finalpath
 
-BUCKET_DIR=$site/$BUCKET_DIR
+BUCKET_DIR=$HOST_NAME/$BUCKET_DIR
 
 #Recorrer elementos
 for database in $databases; do
